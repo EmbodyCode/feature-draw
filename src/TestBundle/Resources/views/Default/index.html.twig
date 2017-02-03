@@ -1,0 +1,38 @@
+{% extends "TestBundle:Default:layout.html.twig" %}
+
+{% block title %}
+    Главная страница
+{% endblock %}
+
+{% block masthead %}
+    <div class="masthead clearfix">
+        <div class="inner">
+            <h3 class="masthead-brand">TPROJECT</h3>
+            <nav>
+                <ul class="nav masthead-nav">
+                    {% if user is defined %}
+                        <li class="active"><a href="/">Главная</a></li>
+                        <li><a href="register">Регистрация</a></li>
+                        <li><a href="logout">Выход</a></li>
+                        {% else %}
+                        <li class="active"><a href="/">Главная</a></li>
+                        <li><a href="register">Регистрация</a></li>
+                        <li><a href="login">Вход</a></li>
+                        {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %} 
+
+{% block content %}
+    <div class="inner cover">
+        <h1 class="cover-heading">Утилита изменения изображения.</h1>
+        <p class="lead">С помощью данного сервиса вы можете производить ряд операций
+            над картинками. Изменять размер, накладывать разные фильтра и коллажи.</p>
+        <p class="lead">
+            <a href="#" class="btn btn-lg btn-default">Попробовать</a>
+        </p>
+    </div>
+{% endblock %}

@@ -71,7 +71,7 @@ class SecurityController extends BaseController {
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
             return new RedirectResponse($this->container->get('router')->generate('home'));
         }
-        return $this->render('TestBundle:Default:login.html.twig', $data);
+        return $this->render('TestBundle:Security:login.html.twig', $data);
     }
 
     public function checkAction() {

@@ -1,7 +1,9 @@
 {% extends "TestBundle:Default:layout.html.twig" %}
 
+{% trans_default_domain 'FOSUserBundle' %}
+
 {% block title %}
-    Главная страница
+    Регистрация
 {% endblock %}
 
 {% block masthead %}
@@ -13,7 +15,6 @@
                     {% if user is defined %}
                         <li class="active"><a href="/">Главная</a></li>
                         <li><a href="/logout">Выход</a></li>
-                        <li><a href="/profile">Личный кабинет</a></li>
                         {% else %}
                         <li class="active"><a href="/">Главная</a></li>
                         <li><a href="/register">Регистрация</a></li>
@@ -28,11 +29,6 @@
 
 {% block content %}
     <div class="inner cover">
-        <h1 class="cover-heading">Утилита изменения изображения.</h1>
-        <p class="lead">С помощью данного сервиса вы можете производить ряд операций
-            над картинками. Изменять размер, накладывать разные фильтра и коллажи.</p>
-        <p class="lead">
-            <a href="/image" class="btn btn-lg btn-default">Попробовать</a>
-        </p>
+        <p class="lead">{{ 'registration.check_email'|trans({'%email%': user.email}) }}</p>
     </div>
 {% endblock %}

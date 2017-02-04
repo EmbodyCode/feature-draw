@@ -1,0 +1,53 @@
+{% extends "TestBundle:Default:layout.html.twig" %}
+
+{% block title %}
+    Регистрация
+{% endblock %}
+
+{% block masthead %}
+    <div class="masthead clearfix">
+        <div class="inner">
+            <h3 class="masthead-brand">TPROJECT</h3>
+            <nav>
+                <ul class="nav masthead-nav">
+                    {% if user is defined %}
+                        <li class="active"><a href="/">Главная</a></li>
+                        <li><a href="/logout">Выход</a></li>
+                        <li><a href="/profile">Личный кабинет</a></li>
+                        {% else %}
+                        <li class="active"><a href="/">Главная</a></li>
+                        <li><a href="/register">Регистрация</a></li>
+                        <li><a href="/login">Вход</a></li>
+                        {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %} 
+
+{% block content %}
+    <div class="inner cover">
+        <form class="form-signin" method="post" action="{{ path("fos_user_registration_register") }}">
+            <h2 class="form-signin-heading">Регистрация</h2>
+            {{ form_label(form.email) }}
+            {{ form_widget(form.email, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_label(form.username) }}
+            {{ form_widget(form.username, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_label(form.plainPassword.first) }}
+            {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_label(form.plainPassword.second) }}
+            {{ form_widget(form.plainPassword.second, { 'attr': {'class': 'form-control'} }) }}
+            {{ form_widget(form) }}
+            <div>
+                <font color="red">{{form_errors(form.email)}}</font>
+                <font color="red">{{form_errors(form.username)}}</font>
+                <font color="red">{{form_errors(form.plainPassword.first)}}</font>
+                <font color="red">{{form_errors(form.plainPassword.second)}}</font>
+            </div>
+
+            <input class = "btn btn-lg btn-default" type="submit" value="Зарегистрироваться" />
+        </form>
+    </div>  
+
+{% endblock %}

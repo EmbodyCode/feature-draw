@@ -1,0 +1,50 @@
+{% extends "TestBundle:Default:layout.html.twig" %}
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+
+{% block title %}
+    Восстановление пароля
+{% endblock %}
+
+{% block masthead %}
+    <div class="masthead clearfix">
+        <div class="inner">
+            <h3 class="masthead-brand">TPROJECT</h3>
+            <nav>
+                <ul class="nav masthead-nav">
+                    {% if user is defined %}
+                        <li class="active"><a href="/">Главная</a></li>
+                        <li><a href="/logout">Выход</a></li>
+                        {% else %}
+                        <li class="active"><a href="/">Главная</a></li>
+                        <li><a href="/register">Регистрация</a></li>
+                        <li><a href="/login">Вход</a></li>
+                        {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %} 
+
+{% block content %}
+    <div class="inner cover">
+        {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'form-signin' } }) }}
+        <h2 class="form-signin-heading">Восстановление пароля</h2>
+        {{ form_label(form.plainPassword.first) }}
+        {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control'} }) }}
+        {{ form_label(form.plainPassword.second) }}
+        {{ form_widget(form.plainPassword.second, { 'attr': {'class': 'form-control'} }) }}
+        <input class = "btn btn-lg btn-default" type="submit" value="{{ 'resetting.reset.submit'|trans }}" />
+        <div>
+            <font color="red">{{form_errors(form.plainPassword.first)}}</font>
+            <font color="red">{{form_errors(form.plainPassword.second)}}</font>
+        </div>
+        {{ form_end(form) }}
+
+
+    </div>  
+
+{% endblock %}
+

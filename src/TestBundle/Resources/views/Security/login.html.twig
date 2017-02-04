@@ -1,0 +1,53 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% extends "TestBundle:Default:layout.html.twig" %}
+
+{% block title %}
+    Авторизация
+{% endblock %}
+
+{% block masthead %}
+    <div class="masthead clearfix">
+        <div class="inner">
+            <h3 class="masthead-brand">TPROJECT</h3>
+            <nav>
+                <ul class="nav masthead-nav">
+                    {% if user is defined %}
+                        <li class="active"><a href="/">Главная</a></li>
+                        <li><a href="/logout">Выход</a></li>
+                        {% else %}
+                        <li class="active"><a href="/">Главная</a></li>
+                        <li><a href="/register">Регистрация</a></li>
+                        <li><a href="/login">Вход</a></li>
+                        {% endif %}
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %} 
+
+{% block content %}
+    <div class="inner cover">
+        <form class="form-signin" method="post" action="{{ path("fos_user_security_check") }}">
+            <h2 class="form-signin-heading">Авторизация</h2>
+            {% if csrf_token %}
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+            {% endif %}
+            <label for="inputEmail" class="sr-only">Логин</label>
+            <input type="text" id="username" name="_username" class="form-control" placeholder="Логин" value="{{ last_username }}"
+                   required autofocus>
+            <label for="inputPassword" class="sr-only">Пароль</label>
+            <input type="password" name="_password" id="password" class="form-control" placeholder="Пароль" required autofocus>
+            <div class="checkbox">
+                <a href="resetting/request">Забыл пароль</a>
+            </div>
+            {% if error %}
+                <div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+            <p class="submit"><input class="btn btn-lg btn-default" type="submit" name="_submit" id="submit" value="{{ 'security.login.submit'|trans }}" value="Войти"></p>
+        </form>
+
+    </div>  
+
+{% endblock %}

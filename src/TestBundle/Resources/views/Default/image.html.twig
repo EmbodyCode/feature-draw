@@ -1,7 +1,7 @@
 {% extends "TestBundle:Default:layout.html.twig" %}
 
 {% block title %}
-    Главная страница
+    Редактор изображения v1.0
 {% endblock %}
 
 {% block masthead %}
@@ -13,7 +13,6 @@
                     {% if user is defined %}
                         <li class="active"><a href="/">Главная</a></li>
                         <li><a href="/logout">Выход</a></li>
-                        <li><a href="/profile">Личный кабинет</a></li>
                         {% else %}
                         <li class="active"><a href="/">Главная</a></li>
                         <li><a href="/register">Регистрация</a></li>
@@ -27,12 +26,6 @@
 {% endblock %} 
 
 {% block content %}
-    <div class="inner cover">
-        <h1 class="cover-heading">Утилита изменения изображения.</h1>
-        <p class="lead">С помощью данного сервиса вы можете производить ряд операций
-            над картинками. Изменять размер, накладывать разные фильтра и коллажи.</p>
-        <p class="lead">
-            <a href="/image" class="btn btn-lg btn-default">Попробовать</a>
-        </p>
+            <image src="{{image}}">
     </div>
 {% endblock %}

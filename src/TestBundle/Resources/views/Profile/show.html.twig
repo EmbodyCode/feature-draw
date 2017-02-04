@@ -1,7 +1,9 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
 {% extends "TestBundle:Default:layout.html.twig" %}
 
 {% block title %}
-    Главная страница
+    Личный кабинет
 {% endblock %}
 
 {% block masthead %}
@@ -28,11 +30,14 @@
 
 {% block content %}
     <div class="inner cover">
-        <h1 class="cover-heading">Утилита изменения изображения.</h1>
-        <p class="lead">С помощью данного сервиса вы можете производить ряд операций
-            над картинками. Изменять размер, накладывать разные фильтра и коллажи.</p>
-        <p class="lead">
-            <a href="/image" class="btn btn-lg btn-default">Попробовать</a>
-        </p>
+        <p class="lead">{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
+        <p class="lead">{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+        {% if is_granted('ROLE_ADMIN') %}
+            <p class="lead">Статус: Администратор</p>
+        {% else %}
+            <p class="lead">Статус: Пользователь</p>
+        {% endif %}
+        
+        <a class ="btn btn-lg btn-default" href="edit">Редактировать</a>
     </div>
 {% endblock %}

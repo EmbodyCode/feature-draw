@@ -43,7 +43,7 @@
                 <a href="resetting/request">Забыл пароль</a>
             </div>
             {% if error %}
-                <div class="error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                <div><font color="red">{{ error|trans({}, 'FOSUserBundle') }}</font></div>
             {% endif %}
             <p class="submit"><input class="btn btn-lg btn-default" type="submit" name="_submit" id="submit" value="{{ 'security.login.submit'|trans }}" value="Войти"></p>
         </form>

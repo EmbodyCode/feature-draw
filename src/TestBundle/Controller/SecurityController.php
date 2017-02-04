@@ -11,51 +11,42 @@
 
 namespace TestBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use FOS\UserBundle\Controller\SecurityController as BaseController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\Security;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\DependencyInjection\ContainerAware;
+use Symfony\Component\Security\Core\SecurityContext;
+use FOS\UserBundle\Controller\ChangePasswordController as BaseController;
 
-class SecurityController extends BaseController {
-
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function loginAction(Request $request) {
-        /** @var $session \Symfony\Component\HttpFoundation\Session\Session */
+class SecurityController extends BaseController
+{
+    public function loginAction()
+    {
+        $request = $this->container->get('request');
+        /* @var $request \Symfony\Component\HttpFoundation\Request */
         $session = $request->getSession();
-
-        $authErrorKey = Security::AUTHENTICATION_ERROR;
-        $lastUsernameKey = Security::LAST_USERNAME;
+        /* @var $session \Symfony\Component\HttpFoundation\Session\Session */
 
         // get the error if any (works with forward and redirect -- see below)
-        if ($request->attributes->has($authErrorKey)) {
-            $error = $request->attributes->get($authErrorKey);
-        } elseif (null !== $session && $session->has($authErrorKey)) {
-            $error = $session->get($authErrorKey);
-            $session->remove($authErrorKey);
+        if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $request->attributes->get(SecurityContext::AUTHENTICATION_ERROR);
+        } elseif (null !== $session && $session->has(SecurityContext::AUTHENTICATION_ERROR)) {
+            $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
+            $session->remove(SecurityContext::AUTHENTICATION_ERROR);
         } else {
-            $error = null;
+            $error = '';
         }
 
-        if (!$error instanceof AuthenticationException) {
-            $error = null; // The value does not come from the security component.
+        if ($error) {
+            // TODO: this is a potential security risk (see http://trac.symfony-project.org/ticket/9523)
+            $error = $error->getMessage();
         }
-
         // last username entered by the user
-        $lastUsername = (null === $session) ? '' : $session->get($lastUsernameKey);
+        $lastUsername = (null === $session) ? '' : $session->get(SecurityContext::LAST_USERNAME);
 
-        $csrfToken = $this->has('security.csrf.token_manager') ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue() : null;
+        $csrfToken = $this->container->has('form.csrf_provider') ? $this->container->get('form.csrf_provider')->generateCsrfToken('authenticate') : null;
 
         return $this->renderLogin(array(
-                    'last_username' => $lastUsername,
-                    'error' => $error,
-                    'csrf_token' => $csrfToken,
+            'last_username' => $lastUsername,
+            'error'         => $error,
+            'csrf_token' => $csrfToken,
         ));
     }
 
@@ -65,21 +56,22 @@ class SecurityController extends BaseController {
      *
      * @param array $data
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    protected function renderLogin(array $data) {
-        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
-            return new RedirectResponse($this->container->get('router')->generate('home'));
-        }
-        return $this->render('TestBundle:Security:login.html.twig', $data);
+    protected function renderLogin(array $data)
+    {
+        $template = sprintf('TestBundle:Security:login.html.%s', $this->container->getParameter('fos_user.template.engine'));
+
+        return $this->container->get('templating')->renderResponse($template, $data);
     }
 
-    public function checkAction() {
+    public function checkAction()
+    {
         throw new \RuntimeException('You must configure the check path to be handled by the firewall using form_login in your security firewall configuration.');
     }
 
-    public function logoutAction() {
+    public function logoutAction()
+    {
         throw new \RuntimeException('You must activate the logout in your security firewall configuration.');
     }
-
 }

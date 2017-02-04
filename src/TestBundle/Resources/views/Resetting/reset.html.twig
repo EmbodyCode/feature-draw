@@ -32,14 +32,14 @@
     <div class="inner cover">
         {{ form_start(form, { 'action': path('fos_user_resetting_reset', {'token': token}), 'attr': { 'class': 'form-signin' } }) }}
         <h2 class="form-signin-heading">Восстановление пароля</h2>
-        {{ form_label(form.plainPassword.first) }}
-        {{ form_widget(form.plainPassword.first, { 'attr': {'class': 'form-control'} }) }}
-        {{ form_label(form.plainPassword.second) }}
-        {{ form_widget(form.plainPassword.second, { 'attr': {'class': 'form-control'} }) }}
+        {{ form_label(form.new.first) }}
+        {{ form_widget(form.new.first, { 'attr': {'class': 'form-control'} }) }}
+        {{ form_label(form.new.second) }}
+        {{ form_widget(form.new.second, { 'attr': {'class': 'form-control'} }) }}
         <input class = "btn btn-lg btn-default" type="submit" value="{{ 'resetting.reset.submit'|trans }}" />
         <div>
-            <font color="red">{{form_errors(form.plainPassword.first)}}</font>
-            <font color="red">{{form_errors(form.plainPassword.second)}}</font>
+            <font color="red">{{form_errors(form.new.first)}}</font>
+            <font color="red">{{form_errors(form.new.second)}}</font>
         </div>
         {{ form_end(form) }}
 

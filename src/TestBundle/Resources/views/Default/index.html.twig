@@ -10,10 +10,14 @@
             <h3 class="masthead-brand">TPROJECT</h3>
             <nav>
                 <ul class="nav masthead-nav">
-                    {% if user is defined %}
+                    {% if is_granted('ROLE_USER') %}
                         <li class="active"><a href="/">Главная</a></li>
                         <li><a href="/logout">Выход</a></li>
                         <li><a href="/profile">Личный кабинет</a></li>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                    <li><a href="admin">AP</a></li>
+                                    {% endif %}
+               
                         {% else %}
                         <li class="active"><a href="/">Главная</a></li>
                         <li><a href="/register">Регистрация</a></li>
